@@ -37,3 +37,9 @@ compiled
 .floobit
 .floo
 .flooignore
+
+
+# webstorm
+
+*.idea*
+.idea
