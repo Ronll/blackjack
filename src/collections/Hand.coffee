@@ -34,8 +34,7 @@ class window.Hand extends Backbone.Collection
   ,
   stand: ->
     if @scores()[1] == 21 then alert("BlackJack, You Won!")
-    else
-      @trigger 'playerStand', this
+    else @trigger 'playerStand', this
   ,  
   dealerPlay: (playerHand) ->
     @first().flip();
