@@ -7,10 +7,13 @@ class window.Hand extends Backbone.Collection
     @add(@deck.pop())
     
     scoreNum = @minScore()
+
+    if @scores()[1] == 21 then alert("BlackJack, You Won!")
+
     if scoreNum > 21
-      alert('Busted')
+      alert("#{if @isDealer then "You Won!, Dealer Busted" else "You Lost!, Busted"}")
     else if scoreNum == 21
-      alert('You Won')
+      alert("#{if @isDealer then "You Lost, Dealer Got 21" else "You Won!, you got 21!"}")
 
     @last()
 
@@ -30,23 +33,26 @@ class window.Hand extends Backbone.Collection
     [@minScore(), @minScore() + 10 * @hasAce()]
   ,
   stand: ->
-    @trigger 'playerStand', this
+    if @scores()[1] == 21 then alert("BlackJack, You Won!")
+    else
+      @trigger 'playerStand', this
   ,  
   dealerPlay: (playerHand) ->
     @first().flip();
+    if @scores()[1] == 21 then alert("Dealer Got BlackJack, You Lost!")
 
     checkHandStatus = =>
       if @minScore() > 21
-        alert('You Won')
+        alert("#{if @isDealer then "You Won!, Dealer Busted" else "You Lost!, Busted"}" )
       else if @minScore() == 21
-        alert('Busted')
+        alert("#{if @isDealer then "You Lost, Dealer Got 21" else "You Won!, you got 21!"}")
 
     checkHandStatus();
 
     dealerScore = @minScore()
     while dealerScore <= 16
-      @hit
-      checkHandStatus();
+      @add(@deck.pop())
+      checkHandStatus()
       dealerScore = @minScore()
 
     playerScore = playerHand.minScore()
@@ -57,7 +63,7 @@ class window.Hand extends Backbone.Collection
     else if playerScore > dealerScore
       alert('You Won!')
     else if playerScore < dealerScore
-      alert('Busted!') 
+      alert('You Lost!')
       
 
 
